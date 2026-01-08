@@ -4,9 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiSearch, FiShoppingBag, FiMenu, FiX } from "react-icons/fi";
+import CartPopup from "../ui/cart-popup";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
+
 
   return (
     <header className="relative z-50">
@@ -33,12 +36,15 @@ export default function Header() {
           <div className="flex items-center gap-5">
             <FiSearch size={22} />
 
-            <div className="relative">
-              <FiShoppingBag size={22} />
-              <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+            <div className="relative hover:bg-primary-light cursor-pointer hover:rounded-full p-2" onClick={() => setOpenCart(!openCart)}>
+              <FiShoppingBag size={22} className="cursor-pointer" />
+              <span className="absolute top-1 right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
                 3
               </span>
             </div>
+            {
+             openCart  && <CartPopup/> 
+            }
 
             {/* @Hamburger menu will appear when mobile mode */}
             <button

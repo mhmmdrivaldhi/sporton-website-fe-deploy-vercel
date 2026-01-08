@@ -18,7 +18,7 @@ const HeroSection = () => {
           <div className="text-primary italic bg-[#FF5F3F1C] inline-flex px-5 py-3 rounded-full mt-4">
             Friday Sale, 50%
           </div>
-          <h1 className="font-extrabold italic leading-tight mt-2 text-[42px] md:text-[95px] bg-gradient-to-b from-black to-[#979797] bg-clip-text text-transparent">
+          <h1 className="font-extrabold italic leading-tight text-[42px] md:text-[95px] bg-gradient-to-b from-black to-[#979797] bg-clip-text text-transparent">
             WEAR YOUR <br />
             TOP-QUALITY <br />
             SPORTSWEAR

@@ -42,6 +42,8 @@ const CartPopup = () => {
             <div className="p-4 border-b border-gray-200 font-bold text-center">
                 Shopping Cart
             </div>
+            <div className="overflow-auto max-h-[300px]">
+
             {
                 cartList.map((item, index) => (
                     <div key={index} className="border-b border-gray-200 flex p-4 gap-3">
@@ -66,6 +68,7 @@ const CartPopup = () => {
                         <Button size="small" variant="ghost" className="w-7 h-7 p-0! self-center ml-auto"><FiTrash2/></Button>
                     </div>
                 ))}
+            </div>
             <div className="border-t border-gray-200 p-4">
                 <div className="flex justify-between">
                     <div className="font-bold">Total</div>

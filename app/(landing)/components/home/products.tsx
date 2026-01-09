@@ -57,7 +57,7 @@ const productList = [
 
 const ProductsSection = () => {
     return (
-    <section id="products-section" className="container mx-auto md:py-3 py-0 px-16">
+    <section id="products-section" className="container mx-auto md:py-3 py-0 px-16 md:mb-42 mb-30">
         <h2 className="font-bold italic md:text-4xl text-3xl text-center mb-11">
             <span className="text-primary">OUR </span>PRODUCTS
         </h2>

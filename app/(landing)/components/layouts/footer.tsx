@@ -3,8 +3,8 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-dark-alternate text-white md:mt-42 mt-30 px-4 md:px-16">
-      <div className="container mx-auto flex flex-col md:flex-row md:justify-between items-center md:items-start pt-7 md:pt-14 pb-12 md:pb-24 gap-10">
+    <footer className="bg-dark-alternate text-white px-4 md:px-16">
+      <div className="container mx-auto flex flex-col md:flex-row md:justify-between items-center md:items-start pt-7 md:pt-8 pb-12 md:pb-24 gap-10">
         <div className="max-w-md text-center md:text-left">
           <div className="flex justify-center md:justify-start">
             <Image

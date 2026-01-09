@@ -1,47 +1,17 @@
+import { cartList } from "../ui/cart-popup";
+import Image from "next/image";
 import PriceFormatter from "@/app/utils/price-formatter";
-import Image from "next/image"
-import { FiTrash2, FiArrowRight } from "react-icons/fi";
+import { FiTrash2, FiCreditCard } from "react-icons/fi";
 import Button from "../ui/button";
 
-
-export const cartList = [
-    {
-        name: "SportsOn Slowlivin",
-        category: "Running",
-        price: 119000,
-        qty: 1,
-        imgUrl : "sportshirt-1.png",
-    },
-    {
-        name: "SportsOn HyperSoccer V2",
-        category: "Football",
-        price: 458000,
-        qty: 2,
-        imgUrl : "football-shoes.png",
-    },
-    {
-        name: "SportsOn Rockets Tennis",
-        category: "Tennis",
-        price: 999000,
-        qty: 1,
-        imgUrl : "racket-2.png",
-    },
-    {
-        name: "SportsOn Rockets Tennis",
-        category: "Tennis",
-        price: 999000,
-        qty: 1,
-        imgUrl : "racket-2.png",
-    },
-]
-
-const CartPopup = () => {
+const CartItems = () => {
     const totalPrice = cartList.reduce((total, item) => total + item.price * item.qty, 0);
     return (
-        <div className="absolute bg-white right-5 md:right-15 top-16 shadow-xl shadow-black/10 border border-gray-200 w-90">
-            <div className="p-4 border-b border-gray-200 font-bold text-center">
-                Shopping Cart
+        <div className="bg-white">
+            <div className="border-b border-gray-200 py-4 px-5">
+                <h2 className="text-lg font-bold">Cart Items</h2>
             </div>
+            <div className="overflow-auto max-h-[300px]">
             {
                 cartList.map((item, index) => (
                     <div key={index} className="border-b border-gray-200 flex p-4 gap-3">
@@ -66,6 +36,7 @@ const CartPopup = () => {
                         <Button size="small" variant="ghost" className="w-7 h-7 p-0! self-center ml-auto"><FiTrash2/></Button>
                     </div>
                 ))}
+            </div>
             <div className="border-t border-gray-200 p-4">
                 <div className="flex justify-between">
                     <div className="font-bold">Total</div>
@@ -73,10 +44,10 @@ const CartPopup = () => {
                         {PriceFormatter(totalPrice)}
                     </div>
                 </div>
-                <Button className="w-full mt-4" variant="dark" size="small">Checkout Now <FiArrowRight/></Button>
+                <Button className="w-full mt-4" variant="dark"><FiCreditCard/> Proceed to Payment</Button>
             </div>
         </div>
     )
 }
 
-export default CartPopup;
+export default CartItems;

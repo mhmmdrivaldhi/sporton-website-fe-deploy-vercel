@@ -1,13 +1,21 @@
+"use client";
+
 import { cartList } from "../ui/cart-popup";
-import Image from "next/image";
 import PriceFormatter from "@/app/utils/price-formatter";
 import { FiCheckCircle } from "react-icons/fi";
 import Button from "../ui/button";
 import CardWithHeader from "../ui/card-with-header";
 import FileUpload from "../ui/file-upload";
+import { useRouter } from "next/navigation";
 
 const PaymentSteps = () => {
+    const {push} = useRouter();
+
     const totalPrice = cartList.reduce((total, item) => total + item.price * item.qty, 0);
+    const uploadAndConfirm = () => {
+        push("/order-status/1");
+    } 
+
     return (
         <CardWithHeader title="Payment Steps">
             <div className="p-5">   
@@ -31,7 +39,7 @@ const PaymentSteps = () => {
                         {PriceFormatter(totalPrice)}
                     </div>
                 </div>
-                <Button className="w-full mt-4" variant="dark"><FiCheckCircle/> Upload Receipt & Confirm</Button>
+                <Button className="w-full mt-4" variant="dark" onClick={uploadAndConfirm}><FiCheckCircle/> Upload Receipt & Confirm</Button>
             </div>
         </CardWithHeader>
     )

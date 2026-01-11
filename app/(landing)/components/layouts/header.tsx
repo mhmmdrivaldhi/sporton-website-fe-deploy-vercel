@@ -16,20 +16,22 @@ export default function Header() {
       <div className="container mx-auto px-4 md:px-16 py-5">
         <div className="flex items-center justify-between">
           {/* @Logo Navbar */}
-          <Image
-            src="/images/logo-sporton.svg"
-            alt="Sporton Logo"
-            width={127}
-            height={30}
-          />
+          <Link href="/">
+            <Image
+              src="/images/logo-sporton.svg"
+              alt="Sporton Logo"
+              width={127}
+              height={30}
+            />
+          </Link>
 
           {/* @Desktop Menu */}
           <nav className="hidden md:flex items-center gap-12 font-medium">
-            <Link href="#" className="relative after:content-[''] after:block after:bg-primary after:h-[3px] after:w-1/2 after:absolute after:left-1/2 after:-translate-x-1/2 after:translate-y-1">
+            <Link href="#hero-section" className="relative after:content-[''] after:block after:bg-primary after:h-[3px] after:w-1/2 after:absolute after:left-1/2 after:-translate-x-1/2 after:translate-y-1">
               Home
             </Link>
-            <Link href="#">Category</Link>
-            <Link href="#">Explore Product</Link>
+            <Link href="#category-section">Category</Link>
+            <Link href="#products-section">Explore Product</Link>
           </nav>
 
           {/* @Icons Search & Shopping Bag */}
@@ -61,13 +63,13 @@ export default function Header() {
       {open && (
         <div className="md:hidden absolute top-full left-0 w-full shadow-lg">
           <nav className="flex flex-col gap-4 px-6 py-6 font-medium bg-white">
-            <Link href="#" onClick={() => setOpen(false)}>
+            <Link href="#hero-section" onClick={() => setOpen(false)}>
               Home
             </Link>
-            <Link href="#" onClick={() => setOpen(false)}>
+            <Link href="#category-section" onClick={() => setOpen(false)}>
               Category
             </Link>
-            <Link href="#" onClick={() => setOpen(false)}>
+            <Link href="#prodct-section" onClick={() => setOpen(false)}>
               Explore Product
             </Link>
           </nav>

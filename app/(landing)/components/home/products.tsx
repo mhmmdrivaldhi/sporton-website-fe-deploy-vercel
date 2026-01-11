@@ -3,74 +3,29 @@ import Link from "next/link";
 import Button from "../ui/button";
 import { FiPlus } from "react-icons/fi";
 import PriceFormatter from "@/app/utils/price-formatter";
+import { Product } from "@/app/types";
+import { getImageUrl } from "@/app/lib/api";
 
-const productList = [
-    {
-        name: "SportsOn Hyperfast Shoes",
-        category: "Running",
-        price: 329000,
-        imgUrl : "shoes-1.png",
-    },
-    {
-        name: "SportsOn Rockets Tennis",
-        category: "Tennis",
-        price: 999000,
-        imgUrl : "racket-1.png",
-    },
-    {
-        name: "SportsOn Slowlivin",
-        category: "Running",
-        price: 119000,
-        imgUrl : "sportshirt-1.png",
-    },
-    {
-        name: "SportsOn HyperSoccer V2",
-        category: "Football",
-        price: 458000,
-        imgUrl : "football-shoes.png",
-    },
-    {
-        name: "SportsOn HyperSoccer V2",
-        category: "Football",
-        price: 458000,
-        imgUrl : "football-shoes.png",
-    },
-    {
-        name: "SportsOn Slowlivin",
-        category: "Running",
-        price: 119000,
-        imgUrl : "sportshirt-2.png",
-    },
-    {
-        name: "SportsOn Hyperfast Shoes",
-        category: "Running",
-        price: 329000,
-        imgUrl : "shoes-2.png",
-    },
-    {
-        name: "SportsOn Rockets Tennis",
-        category: "Tennis",
-        price: 999000,
-        imgUrl : "racket-2.png",
-    },
-]
+type TProductProps = {
+    products: Product[];
+}
 
-const ProductsSection = () => {
+const ProductsSection = ({products}: TProductProps) => {
     return (
     <section id="products-section" className="container mx-auto md:py-3 py-0 px-16 md:mb-42 mb-30">
         <h2 className="font-bold italic md:text-4xl text-3xl text-center mb-11">
             <span className="text-primary">OUR </span>PRODUCTS
         </h2>
         <div className="grid md:grid-cols-4 gap-5">
-            {productList.map((product, index) => (
+            {products.map((product) => (
                 <Link 
-                    href={`/product/${product.name}`}
-                    key={index}
+                    href={`/product/${product._id}`}
+                    key={product._id}
                     className="p-1.5 bg-white hover:drop-shadow-xl duration-300"
                 >
                     <div className="bg-primary-light aspect-square w-full flex justify-center items-center relative">
                         <Image
-                            src={`/images/products/${product.imgUrl}`}
+                            src={getImageUrl(product.imageUrl)}
                             alt={product.name}
                             width={300}
                             height={300}
@@ -82,7 +37,7 @@ const ProductsSection = () => {
                     </div>
                     <h3 className="font-medium text-lg mb-1.5 mt-4">{product.name}</h3>
                     <div className="flex justify-between mb-8">
-                        <div className="text-gray-500">{product.category}</div>
+                        <div className="text-gray-500">{product.category.name}</div>
                         <div className="font-medium text-primary">
                             {PriceFormatter(product.price)}
                         </div>

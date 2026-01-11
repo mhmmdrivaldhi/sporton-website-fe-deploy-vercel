@@ -8,9 +8,9 @@ const ProductActions = () => {
     const [qty, setQty] = useState(1);
 
     return (
-        <div className="flex gap-3">
-            <div className="border border-gray-500 inline-flex w-fit min-w-20.5">
-                <div className="aspect-square text-xl font-medium border-r border-gray-500 flex justify-center items-center px-5">
+        <div className="flex flex-col lg:flex-row gap-3">
+            <div className="border border-gray-500 inline-flex w-fit lg:min-w-20.5">
+                <div className="aspect-square lg:text-xl font-medium border-r border-gray-500 flex justify-center items-center px-5">
                     <span>{qty}</span>
                 </div>
                 <div className="flex flex-col">

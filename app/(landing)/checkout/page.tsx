@@ -5,6 +5,7 @@ import CartItems from "../components/checkout/cart-items";
 import { useState } from "react";
 import { CustomerInfo, useCartStore } from "@/app/hooks/use-cart-store";
 import { useRouter } from "next/navigation";
+import { confirmAlert, warningAlert } from "@/app/lib/alert";
 
 const Checkout = () => {
     const {push} = useRouter();
@@ -15,14 +16,19 @@ const Checkout = () => {
         customerAddress: "",
     })
 
-    const payment = () => {
+    const handleCheckout = async () => {
         if(!formData.customerName || !formData.customerContact || !formData.customerAddress) {
-            alert("Please fill in all fields");
+            warningAlert("Warning", "Require to fill in the columns provided")
             return
         }
 
         setCustomerInfo(formData);
-        push("/payment");
+
+        const confirmation = await confirmAlert("Checkout Now?", "Make sure the order is correct");
+
+        if (confirmation.isConfirmed) {
+            push("/payment");
+        }
     }
 
     return (
@@ -31,7 +37,7 @@ const Checkout = () => {
                 <h1 className="md:text-3xl text-xl font-bold text-center md:py-8 py-5">Checkout Now</h1>
             <div className="grid md:grid-cols-2 md:gap-14 gap-7">
                 <OrderInformation formData={formData} setFormData={setFormData}/>
-                <CartItems handlePayment={payment}/>
+                <CartItems handlePayment={handleCheckout}/>
             </div>
             </div>
         </main>

@@ -5,7 +5,7 @@ import Button from "../ui/button";
 const HeroSection = () => {
   return (
     <section
-      id="hero-section" className="container mx-auto min-h-screen flex items-center px-4 md:px-0">
+      id="hero-section" className="container mx-auto min-h-screen flex items-center px-4 md:px-0 lg:py-40 py-20">
       <div className="relative w-full">
         <div className="relative md:px-50">
           <Image

@@ -4,7 +4,7 @@ import PriceFormatter from "@/app/utils/price-formatter";
 import { getProductDetail } from "@/app/services/product_service";
 import { getImageUrl } from "@/app/lib/api";
 
-type TPageProps = {
+export type TPageProps = {
     params: Promise<{id: string}>
 }
 
@@ -36,7 +36,7 @@ const ProductDetail = async ({params}: TPageProps) => {
                         PriceFormatter(product.price)
                     }
                 </div>
-                <ProductActions stock={product.stock}/>
+                <ProductActions product = {product} stock={product.stock}/>
             </div>
         </main>
     )

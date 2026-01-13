@@ -9,24 +9,22 @@ import { useRouter } from "next/navigation";
 import { useCartStore } from "@/app/hooks/use-cart-store";
 import { useState } from "react";
 import { transactionCheckout } from "@/app/services/transaction_service";
+import { confirmAlert, successAlert, warningAlert } from "@/app/lib/alert";
 
 const PaymentSteps = () => {
     const {push} = useRouter();
     const {customerInfo, items, reset} = useCartStore();
     const [file, setFile] = useState<File | null>(); 
     const totalPrice = items.reduce((total, item) => total + item.price * item.qty, 0);
-    const uploadAndConfirm = () => {
-        push("/order-status/1");
-    } 
 
     const handleConfirmPayment = async () => {
         if (!file) {
-            alert("Please upload a payment receipt.");
+            warningAlert("Warning", "Must include proof of payment, Please upload a payment receipt.")
             return;
         }
 
         if (!customerInfo) {
-            alert("Customer Information is Missing, Please provide customer information.");
+            warningAlert("Customer Information is Missing, Please provide customer information.");
             push("/checkout");
             return;
         }
@@ -47,9 +45,13 @@ const PaymentSteps = () => {
 
             const response = await transactionCheckout(formData);
 
-            alert("Transaction created successfully!")
-            reset();
-            push(`/order-status/${response._id}`)
+            const confimation = await confirmAlert("Pay Now?", "Make sure all the steps are complete")
+
+            if (confimation.isConfirmed) {
+                successAlert("Transaction created successfully!")
+                reset();
+                push(`/order-status/${response._id}`)
+            }
 
         } catch(error) {
             console.log(error);

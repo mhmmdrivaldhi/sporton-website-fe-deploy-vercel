@@ -3,60 +3,30 @@ import Image from "next/image"
 import { FiTrash2, FiArrowRight } from "react-icons/fi";
 import Button from "../ui/button";
 import { useRouter } from "next/navigation";
+import { useCartStore } from "@/app/hooks/use-cart-store";
+import { getImageUrl } from "@/app/lib/api";
 
-
-export const cartList = [
-    {
-        name: "SportsOn Slowlivin",
-        category: "Running",
-        price: 119000,
-        qty: 1,
-        imgUrl : "sportshirt-1.png",
-    },
-    {
-        name: "SportsOn HyperSoccer V2",
-        category: "Football",
-        price: 458000,
-        qty: 2,
-        imgUrl : "football-shoes.png",
-    },
-    {
-        name: "SportsOn Rockets Tennis",
-        category: "Tennis",
-        price: 999000,
-        qty: 1,
-        imgUrl : "racket-2.png",
-    },
-    {
-        name: "SportsOn Rockets Tennis",
-        category: "Tennis",
-        price: 999000,
-        qty: 1,
-        imgUrl : "racket-2.png",
-    },
-]
 
 const CartPopup = () => {
     const {push} = useRouter();
+    const {items, removeItem} = useCartStore();
 
-    const totalPrice = cartList.reduce((total, item) => total + item.price * item.qty, 0);
+    const totalPrice = items.reduce((total, item) => total + item.price * item.qty, 0);
     const checkout = () => {
         push("/checkout");
     }
- 
     return (
         <div className="absolute bg-white right-5 md:right-15 top-16 shadow-xl shadow-black/10 border border-gray-200 w-90">
             <div className="p-4 border-b border-gray-200 font-bold text-center">
                 Shopping Cart
             </div>
             <div className="overflow-auto max-h-[300px]">
-
             {
-                cartList.map((item, index) => (
-                    <div key={index} className="border-b border-gray-200 flex p-4 gap-3">
+                items.length ? items.map((item) => (
+                    <div key={item._id} className="border-b border-gray-200 flex p-4 gap-3">
                         <div className="bg-primary-light aspect-square w-14 flex justify-center items-center">
                             <Image
-                                src={`/images/products/${item.imgUrl}`}
+                                src={getImageUrl(item.imageUrl)}
                                 alt={item.name}
                                 width={83}
                                 height={73}
@@ -72,9 +42,13 @@ const CartPopup = () => {
                                 </div>
                             </div>
                         </div>
-                        <Button size="small" variant="ghost" className="w-7 h-7 p-0! self-center ml-auto"><FiTrash2/></Button>
+                        <Button size="small" variant="ghost" className="w-7 h-7 p-0! self-center ml-auto" onClick={() => removeItem(item._id)}><FiTrash2/></Button>
                     </div>
-                ))}
+                )) : (
+                    <div className="text-center text-gray-600 py-5">
+                        - no items in your cart -
+                    </div>
+                )}
             </div>
             <div className="border-t border-gray-200 p-4">
                 <div className="flex justify-between">

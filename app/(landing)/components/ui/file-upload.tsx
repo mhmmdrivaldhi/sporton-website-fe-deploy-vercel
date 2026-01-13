@@ -12,7 +12,6 @@ const FileUpload = ({onFileSelect}: TFileUploadProps) => {
     const [file, setFile] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-
     const HandleFileChange =  (selectedFile?: File) => {
         if(!selectedFile) return;
 

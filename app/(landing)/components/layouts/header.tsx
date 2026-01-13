@@ -5,14 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiSearch, FiShoppingBag, FiMenu, FiX } from "react-icons/fi";
 import CartPopup from "../ui/cart-popup";
+import { useCartStore } from "@/app/hooks/use-cart-store";
 
 export default function Header() {
+  const {items} = useCartStore();
   const [open, setOpen] = useState(false);
   const [openCart, setOpenCart] = useState(false);
 
-
   return (
-    <header className="relative z-50">
+    <header className="z-50 fixed w-full backdrop-blur-3xl bg-white/70">
       <div className="container mx-auto px-4 md:px-16 py-5">
         <div className="flex items-center justify-between">
           {/* @Logo Navbar */}
@@ -40,9 +41,14 @@ export default function Header() {
 
             <div className="relative hover:bg-primary-light cursor-pointer hover:rounded-full p-2" onClick={() => setOpenCart(!openCart)}>
               <FiShoppingBag size={22} className="cursor-pointer" />
-              <span className="absolute top-1 right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                3
-              </span>
+              {
+                items.length ? (
+                  <span className="absolute top-1 right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                    {items.length}
+                  </span>
+                ) : (
+                <></>
+                )}
             </div>
             {
              openCart  && <CartPopup/> 

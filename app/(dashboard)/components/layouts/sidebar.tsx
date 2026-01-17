@@ -1,8 +1,9 @@
 "use client";
 
+import { confirmAlert } from "@/app/lib/alert";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FiBox, FiLayers, FiShoppingCart, FiCreditCard, FiLogOut } from "react-icons/fi";
 
 
@@ -31,6 +32,17 @@ const Sidebar = () => {
             link: "/admin/bank-info"
         },
     ]
+
+    const {push} = useRouter();
+    const handleLogout = async () => {
+        const confirmation = await confirmAlert("Are you sure you want to logout?")
+
+        if (confirmation.isConfirmed) {
+            push("/admin/login");
+        }
+    }
+
+
     return (
         <aside className="w-80 min-h-screen bg-white border-r border-gray-100 flex flex-col fixed top-0 left-0">
             <div className="py-8 px-14 border-b border-gray-100 flex items-center justify-center">
@@ -56,7 +68,7 @@ const Sidebar = () => {
                     })
                 }
             </div>
-            <Link href="#" className="flex gap-3 py-2 px-4.5 font-medium mx-5 hover:bg-red-500 hover:text-gray-100 duration-200 rounded-lg mt-auto mb-10"><FiLogOut size={24} />Log Out</Link>
+            <Link href="#" className="flex gap-3 py-2 px-4.5 font-medium mx-5 hover:bg-red-500 hover:text-gray-100 duration-200 rounded-lg mt-auto mb-10" onClick={handleLogout}><FiLogOut size={24} />Log Out</Link>
         </aside>
     )
 }

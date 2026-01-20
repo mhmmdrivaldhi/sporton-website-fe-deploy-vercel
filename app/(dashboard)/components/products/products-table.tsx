@@ -1,32 +1,16 @@
+import { getImageUrl } from "@/app/lib/api";
+import { Product } from "@/app/types";
 import PriceFormatter from "@/app/utils/price-formatter";
 import Image from "next/image";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
-const productData = [
-    {
-        imgUrl: "/images/products/shoes-2.png",
-        product: "SportsOn Hyperfast Shoes",
-        category: "Running",
-        price: 289000,
-        stock: 2,
-    },
-    {
-        imgUrl: "/images/products/sportshirt-1.png",
-        product: "SportsOn Slowlivin",
-        category: "Running",
-        price: 145000,
-        stock: 5,
-    },
-    {
-        imgUrl: "/images/products/football-shoes.png",
-        product: "SportsOn HyperSocces v2",
-        category: "Football",
-        price: 756000,
-        stock: 3,
-    },
-]
+type TProductsTableProps = {
+    products: Product[];
+    onDelete?: (id: string) => void;
+    onEdit?: (product: Product) => void;
+} 
 
-const ProductTable = () => {
+const ProductTable = ({products, onDelete, onEdit}: TProductsTableProps) => {
     return (
         <div className="bg-white rounded-xl border-gray-200">
             <table className="w-full text-left border-collapse">
@@ -41,25 +25,25 @@ const ProductTable = () => {
                 </thead>
                 <tbody>
                     {
-                        productData.map((data, index) => (
-                            <tr key={index} className="border-b border-gray-200 last:border-b-0">
+                        products.map((data) => (
+                            <tr key={data._id} className="border-b border-gray-200 last:border-b-0">
                                 <td className="px-6 py-4 font-medium">
                                     <div className="flex gap-2 items-center">
                                         <div className="aspect-square bg-gray-100 rounded-md">
                                             <Image
-                                                src={data.imgUrl}
-                                                alt={data.product}
+                                                src={getImageUrl(data.imageUrl)}
+                                                alt={data.name}
                                                 width={40}
                                                 height={40}
                                                 className="aspect-square object-contain"
                                             />
                                         </div>
-                                        <span>{data.product}</span>
+                                        <span>{data.name}</span>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 font-medium">
                                     <div className="rounded-md bg-gray-200 px-2 px-1 w-fit">
-                                        {data.category}
+                                        {data.category.name}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 font-medium">
@@ -67,10 +51,10 @@ const ProductTable = () => {
                                 </td>
                                 <td className="px-6 py-4 font-medium">{data.stock} Units</td>
                                 <td className="flex gap-4 items-center px-6 py-7.5 text-gray-600">
-                                    <button>
+                                    <button onClick={() => onEdit?.(data)} className="cursor-pointer">
                                         <FiEdit2 size={20}/>
                                     </button>
-                                    <button>
+                                    <button onClick={() => onDelete?.(data._id)} className="cursor-pointer">
                                         <FiTrash2 size={20}/>
                                     </button>
                                 </td>

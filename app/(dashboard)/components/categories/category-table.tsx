@@ -1,20 +1,15 @@
+import { getImageUrl } from "@/app/lib/api";
+import { Category } from "@/app/types";
 import Image from "next/image";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
-const categoryData = [
-    {
-        imgUrl: "/images/categories/category-running.png",
-        category: "Running",
-        description: "All Running Items, Shoes, Shirts"
-    },
-    {
-        imgUrl: "/images/categories/category-football.png",
-        category: "Football",
-        description: "All Football Items, Shoes, Shirts"
-    },
-]
+type TCategoriesTableProps = {
+    categories: Category[];
+    onDelete?: (id: string) => void;
+    onEdit?: (category: Category) => void;
+}
 
-const CategoryTable = () => {
+const CategoryTable = ({categories, onEdit, onDelete}: TCategoriesTableProps) => {
     return (
         <div className="bg-white rounded-xl border-gray-200">
             <table className="w-full text-left border-collapse">
@@ -27,20 +22,20 @@ const CategoryTable = () => {
                 </thead>
                 <tbody>
                     {
-                        categoryData.map((data, index) => (
-                            <tr key={index} className="border-b border-gray-200 last:border-b-0">
+                        categories.map((data) => (
+                            <tr key={data._id} className="border-b border-gray-200 last:border-b-0">
                                 <td className="px-6 py-4 font-medium">
                                     <div className="flex gap-2 items-center">
                                         <div className="aspect-square bg-gray-100 rounded-md">
                                             <Image
-                                                src={data.imgUrl}
-                                                alt={data.category}
+                                                src={getImageUrl(data.imageUrl)}
+                                                alt={data.name}
                                                 width={40}
                                                 height={40}
                                                 className="aspect-square object-contain"
                                             />
                                         </div>
-                                        <span>{data.category}</span>
+                                        <span>{data.name}</span>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 font-medium">
@@ -49,10 +44,10 @@ const CategoryTable = () => {
                                     </div>
                                 </td>
                                 <td className="flex gap-4 items-center px-6 py-7.5 text-gray-600">
-                                    <button>
+                                    <button onClick={() => onEdit?.(data)} className="cursor-pointer">
                                         <FiEdit2 size={20}/>
                                     </button>
-                                    <button>
+                                    <button onClick={() => onDelete?.(data._id)} className="cursor-pointer">
                                         <FiTrash2 size={20}/>
                                     </button>
                                 </td>

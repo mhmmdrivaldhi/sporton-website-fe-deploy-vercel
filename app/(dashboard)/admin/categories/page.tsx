@@ -2,15 +2,62 @@
 
 import Button from "@/app/(landing)/components/ui/button";
 import { FiPlus } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CategoryModal from "../../components/categories/category-modal";
 import CategoryTable from "../../components/categories/category-table";
+import { Category } from "@/app/types";
+import { deleteCategory, getAllCategories } from "@/app/services/category_service";
+import { toast } from "react-toastify";
+import DeleteModal from "../../components/ui/delete-modal";
 
 const CategoryManagement = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState<Category | null>();
+    const [categories, setCategories] = useState<Category[]>([])
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [categoryToDeleteId, setCategoryToDeleteId] = useState("");
+
+    const fetchCategories = async () => {
+        try {
+            const data = await getAllCategories();
+            setCategories(data); 
+        } catch (error) {
+            console.error("Error fetching categories:", error)
+        }
+    }
+
+    const handleEdit = (category: Category) => {
+        setSelectedCategory(category);
+        setIsModalOpen(true);
+    }
+
+    const handleDelete = (id: string) => {
+        setCategoryToDeleteId(id);
+        setIsDeleteModalOpen(true);
+    }
+
+    const handleDeleteConfirm = async () => {
+        if (!categoryToDeleteId) return;
+        try {
+            await deleteCategory(categoryToDeleteId)
+            fetchCategories()
+            toast.success("Category Deleted Succesfully")
+            setIsDeleteModalOpen(false)
+            setCategoryToDeleteId("")
+        } catch (error) {
+            console.error("Error deleting category:", error)
+            toast.error("Failed to Delete Category")
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, [])
+
     const handleCloseModal = () => {
-        setIsOpen(false);
+        setIsModalOpen(false);
+        setSelectedCategory(null);
     }
 
     return (
@@ -21,10 +68,11 @@ const CategoryManagement = () => {
                     <span className="opacity-50 text-xl">Organize your products into categories.
                     </span>
                 </div>
-                <Button size="small" className="rounded-lg" onClick={() => setIsOpen(true)}><FiPlus size={20}/>Add Category</Button>
+                <Button size="small" className="rounded-lg" onClick={() => setIsModalOpen(true)}><FiPlus size={20}/>Add Category</Button>
             </div>
-            <CategoryTable/>
-            <CategoryModal isOpen={isOpen} onClose={handleCloseModal}/>
+            <CategoryTable categories = {categories} onEdit = {handleEdit} onDelete = {handleDelete}/>
+            <CategoryModal category = {selectedCategory} onSuccess = {fetchCategories} isOpen={isModalOpen} onClose={handleCloseModal}/>
+            <DeleteModal isOpen = {isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleDeleteConfirm}/>
         </div>
     )
 }

@@ -47,9 +47,9 @@ export interface Transaction {
     paymentProof: "pending" | "paid" | "rejected"
     status: string
     purchasedItems: {
-        productId: string
+        productId: Product
         qty: number
-    }
+    }[]
     totalPayment: string
     customerName: string
     customerContact: number | null

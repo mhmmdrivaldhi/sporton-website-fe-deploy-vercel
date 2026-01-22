@@ -1,36 +1,14 @@
+import { Transaction } from "@/app/types";
 import PriceFormatter from "@/app/utils/price-formatter";
 import { FiEye } from "react-icons/fi";
 
-const transactionData = [
-    {
-        date: "23/02/2026 19:32",
-        customer: "John Doe",
-        contact: "08231223123",
-        total: 450000,
-        status: "pending",
-    },
-    {
-        date: "23/02/2026 13:32",
-        customer: "Delon Marx",
-        contact: "08231223123",
-        total: 753000,
-        status: "paid",
-    },
-    {
-        date: "23/02/2026 13:32",
-        customer: "Delon Marx",
-        contact: "08231223123",
-        total: 753000,
-        status: "rejected",
-    },
-]
-
 type TViewDetailProps = {
-    onViewDetail: () => void;
+    onViewDetail: (transaction: Transaction) => void;
+    transactions: Transaction[];
 }
 
 
-const TransactionTable = ({ onViewDetail}: TViewDetailProps) => {
+const TransactionTable = ({ onViewDetail, transactions}: TViewDetailProps) => {
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
             case "pending":
@@ -57,19 +35,23 @@ const TransactionTable = ({ onViewDetail}: TViewDetailProps) => {
                 </thead>
                 <tbody>
                     {
-                        transactionData.map((data, index) => (
-                            <tr key={index} className="border-b border-gray-200 last:border-b-0">
+                        transactions.map((data) => (
+                            <tr key={data._id} className="border-b border-gray-200 last:border-b-0">
                                 <td className="px-6 py-4 font-medium">
-                                    <div className="flex gap-2 items-center">
-                                        <span>{data.date}</span>
-                                    </div>
+                                    {
+                                        new Date(data.createdAt).toLocaleDateString("id-ID", {
+                                            day: "numeric",
+                                            month: "short",
+                                            year: "numeric",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        })
+                                    }
                                 </td>
+                                <td className="px-6 py-4 font-medium">{data.customerName}</td>
+                                <td className="px-6 py-4 font-medium">{data.customerContact}</td>
                                 <td className="px-6 py-4 font-medium">
-                                    {data.customer}
-                                </td>
-                                <td className="px-6 py-4 font-medium">{data.contact}</td>
-                                <td className="px-6 py-4 font-medium">
-                                    {PriceFormatter(data.total)}
+                                    {PriceFormatter(parseInt(data.totalPayment))}
                                 </td>
                                 <td className="px-6 py-4 font-medium">
                                     <div className={`px-1 py-1 text-center rounded-full ${getStatusColor(data.status)}`}>
@@ -77,7 +59,7 @@ const TransactionTable = ({ onViewDetail}: TViewDetailProps) => {
                                     </div>
                                 </td>
                                 <td className="flex gap-4 items-center py-4 text-dark font-medium">
-                                    <button className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 w-fit py-3 px-3 rounded-lg" onClick={onViewDetail}>
+                                    <button className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 w-fit py-3 px-3 rounded-lg" onClick={() => onViewDetail(data)}>
                                         <FiEye size={20}/>
                                         <span>View Details</span>
                                     </button>
